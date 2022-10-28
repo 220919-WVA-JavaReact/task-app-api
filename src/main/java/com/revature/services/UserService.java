@@ -6,6 +6,7 @@ import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.util.exceptions.UserNotCreatedException;
 import com.revature.util.exceptions.UserNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +14,8 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private UserDao ud = new UserPostgres();
+    @Autowired
+    private UserDao ud;
 
     public User createUser(User u) throws UserNotCreatedException {
         // by default, created account will be basic Users
