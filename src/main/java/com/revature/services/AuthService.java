@@ -5,9 +5,14 @@ import com.revature.daos.UserPostgres;
 import com.revature.models.User;
 import com.revature.util.exceptions.LoginException;
 import com.revature.util.exceptions.UserNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AuthService {
-    private UserDao ud = new UserPostgres();
+
+    @Autowired
+    private UserDao ud;
 
     /*-
      * if the user is found by username and the password matches, returns that user
