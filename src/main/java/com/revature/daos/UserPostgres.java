@@ -3,11 +3,13 @@ package com.revature.daos;
 import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.util.ConnectionUtil;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class UserPostgres implements UserDao{
 
     @Override
