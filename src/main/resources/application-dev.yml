@@ -5,7 +5,7 @@ spring:
     password: pass
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
-    defer-datasource-initialization: true # Tells spring to run data.sql after tables are created by Hibernate
+    defer-datasource-initialization: true # Tells spring to run import.sql after tables are created by Hibernate
     hibernate:
       ddl-auto: create # Specifies how Hibernate should interact with existing tables
     show-sql: true
