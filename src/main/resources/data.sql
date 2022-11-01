@@ -1,0 +1,1 @@
+insert into users(id, username, password, role) values ('abcdef', 'admin', 'pass', 'ADMIN');

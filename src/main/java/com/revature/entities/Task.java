@@ -17,11 +17,11 @@ public class Task {
     @Column(nullable = false)
     private String description;
 
-    @ManyToOne
+    @ManyToOne // the user who created this task
     @JoinColumn(name="created_by", nullable = false)
     private User createdBy;
 
-    @ManyToMany
+    @ManyToMany // a list of users who are assigned to this tasks
     @JoinTable(
             name = "tasks_users",
             joinColumns = @JoinColumn(name="task_id"),

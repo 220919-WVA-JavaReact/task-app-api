@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: ${DB_URL} # Environment variables to not hardcode values
+    username: ${DB_USER}
+    password: ${DB_PASS}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate # Specifies how Hibernate should interact with existing tables
+
