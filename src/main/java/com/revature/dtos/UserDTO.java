@@ -12,6 +12,9 @@ public class UserDTO {
     private Role role;
     private String managerId;
 
+    public UserDTO(){
+
+    }
     public UserDTO(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
