@@ -14,10 +14,6 @@ import java.time.LocalDateTime;
 @WebFilter
 @Component
 public class CorsFilter extends HttpFilter {
-    @Override
-    public void init() throws ServletException {
-        System.out.println("[LOG] - CustomFilter initialized at " + LocalDateTime.now());
-    }
 
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
