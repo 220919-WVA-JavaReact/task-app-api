@@ -1,40 +1,68 @@
 package com.revature.services;
 
-import com.revature.daos.UserDao;
-import com.revature.daos.UserPostgres;
-import com.revature.models.Role;
-import com.revature.models.User;
-import com.revature.util.exceptions.UserNotCreatedException;
-import com.revature.util.exceptions.UserNotFoundException;
+import com.revature.dtos.CredentialsDTO;
+import com.revature.dtos.UserDTO;
+import com.revature.entities.Role;
+import com.revature.entities.User;
+import com.revature.exceptions.UserNotFoundException;
+import com.revature.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
+//@Scope("Singleton") - implicit
 public class UserService {
+    private UserRepository ur;
 
-    private UserDao ud = new UserPostgres();
-
-    public User createUser(User u) throws UserNotCreatedException {
-        // by default, created account will be basic Users
-        u.setRole(Role.BASIC_USER);
-
-        User createdUser = ud.insertUser(u);
-        if(createdUser.getId() == -1) {
-            throw new UserNotCreatedException();
-        }
-        return createdUser;
+    @Autowired
+    public UserService(UserRepository ur){
+        this.ur = ur;
     }
 
-    public User getUserById(int id) throws UserNotFoundException {
-        User u = ud.getUserById(id);
-        if (u == null) {
-            throw new UserNotFoundException();
-        }
-        return u;
+    public List<UserDTO> getAllUsers(){
+        List<User> users = ur.findAll();
+        List<UserDTO> usersDTO = users.stream()
+                .map(user -> new UserDTO(user))
+                .collect(Collectors.toList());
+        return usersDTO;
     }
 
-    public List<User> getUsers() {
-        List<User> users = ud.getUsers();
-        return users;
+    public List<UserDTO> getAllUsersByRole(Role role){
+        List<User> users = ur.findUsersByRole(role);
+        List<UserDTO> usersDTO = users.stream()
+                .map(user -> new UserDTO(user))
+                .collect(Collectors.toList());
+        return usersDTO;
+    }
+
+    public UserDTO getUserById(String id) {
+        // find user by id, if not found, throw user not found exception to be handled in the controller
+        User user = ur.findById(id).orElseThrow(() -> new UserNotFoundException());
+        UserDTO userDTO = new UserDTO(user);
+
+        return userDTO;
+    }
+
+    public UserDTO createUser(CredentialsDTO creds){
+
+        // TODO: validation that username isn't taken
+        // check if username is taken
+//        User u = ur.findUserByUsername(creds.getUsername());
+//        if(u != null){
+//            // throw a UsernameAlreadyTakenException
+//        }
+
+        User newUser = new User();
+        newUser.setUsername(creds.getUsername());
+        newUser.setPassword(creds.getPassword());
+        newUser.setRole(Role.BASIC_USER);
+        newUser.setManager(null); // could determine a default manager
+
+        ur.save(newUser);
+
+        return new UserDTO(newUser);
     }
 }

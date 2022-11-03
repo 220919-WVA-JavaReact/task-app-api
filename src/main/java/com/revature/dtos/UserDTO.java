@@ -1,28 +1,57 @@
 package com.revature.dtos;
 
-import com.revature.models.Role;
-import com.revature.models.User;
+import com.revature.entities.Role;
+import com.revature.entities.User;
 
 import java.util.Objects;
 
 public class UserDTO {
-    private int id;
+
+    private String id;
     private String username;
     private Role role;
+    private String managerId;
 
-    public UserDTO() {
+    public UserDTO(){
+
+    }
+    public UserDTO(User user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.role = user.getRole();
+        if(user.getManager() != null) {
+            this.managerId = user.getManager().getId();
+        }
     }
 
-    public UserDTO(User u){
-        this.username = u.getUsername();
-        this.id = u.getId();
-        this.role = u.getRole();
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", role=" + role +
+                ", managerId='" + managerId + '\'' +
+                '}';
     }
-    public int getId() {
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserDTO)) return false;
+        UserDTO userDTO = (UserDTO) o;
+        return Objects.equals(getId(), userDTO.getId()) && Objects.equals(getUsername(), userDTO.getUsername()) && getRole() == userDTO.getRole() && Objects.equals(getManagerId(), userDTO.getManagerId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getUsername(), getRole(), getManagerId());
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -42,25 +71,11 @@ public class UserDTO {
         this.role = role;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UserDTO)) return false;
-        UserDTO userDTO = (UserDTO) o;
-        return getId() == userDTO.getId() && Objects.equals(getUsername(), userDTO.getUsername()) && getRole() == userDTO.getRole();
+    public String getManagerId() {
+        return managerId;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getUsername(), getRole());
-    }
-
-    @Override
-    public String toString() {
-        return "UserDTO{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", role=" + role +
-                '}';
+    public void setManagerId(String managerId) {
+        this.managerId = managerId;
     }
 }
