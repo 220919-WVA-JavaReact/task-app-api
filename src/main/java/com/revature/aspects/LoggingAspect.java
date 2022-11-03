@@ -39,7 +39,7 @@ public class LoggingAspect {
         log.trace(methodSignature + " successfully returned with the value: " + t.getMessage());
     }
     public String extractMethodSignature(JoinPoint jp){
-        String methodSignature = jp.getTarget().getClass().getSimpleName()+ ":" + jp.getSignature().getName();
+        String methodSignature = jp.getTarget().getClass().getSimpleName()+ "#" + jp.getSignature().getName();
         return methodSignature;
     }
 }

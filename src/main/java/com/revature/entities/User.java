@@ -16,7 +16,6 @@ public class User {
     private String username;
 
     @Column(nullable = false)
-//    @Column(columnDefinition = "VARCHAR NOT NULL CHECK(LENGTH(PASSWORD)>=3")
     private String password;
 
     @Enumerated(EnumType.STRING) // store the enum value as String instead of 0, 1, ...

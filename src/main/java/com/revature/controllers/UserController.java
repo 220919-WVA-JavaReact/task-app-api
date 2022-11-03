@@ -21,41 +21,27 @@ public class UserController {
     private UserService us;
 
     @Autowired
-    public UserController(UserService us){
+    public UserController(UserService us) {
         this.us = us;
     }
 
-    @GetMapping
-    public ResponseEntity<List<UserDTO>> getUsers(@RequestParam(name="role", required = false) Role role){
-
-        List<UserDTO> users = null;
-        // meaning no request params (ie: no role), return all users
-        if(role == null){
-             users = us.getAllUsers();
-            return new ResponseEntity<>(users, HttpStatus.OK);
+    @GetMapping(produces = "application/json")
+    public ResponseEntity<List<UserDTO>> getUsers(@RequestParam(name = "role", required = false) Role role) {
+        if (role == null) {
+            return new ResponseEntity<>(us.getAllUsers(), HttpStatus.OK);
         } else {
-            // if the is a role, we want to send back users based on that role
-            users = us.getAllUsersByRole(role);
-            return new ResponseEntity<>(users, HttpStatus.OK);
+            return new ResponseEntity<>(us.getAllUsersByRole(role), HttpStatus.OK);
         }
-
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getById(@PathVariable("id") String id){
-
-            UserDTO userDTO = us.getUserById(id);
-            // User is found, return userDTO, status 200
-            return new ResponseEntity<>(userDTO, HttpStatus.OK);
-
+    @GetMapping(value = "/{id}", produces = "application/json")
+    public ResponseEntity<UserDTO> getById(@PathVariable("id") String id) {
+        return new ResponseEntity<>(us.getUserById(id), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody CredentialsDTO creds){
-
-        UserDTO userDTO = us.createUser(creds);
-
-        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    public ResponseEntity<UserDTO> createUser(@RequestBody CredentialsDTO creds) {
+        return new ResponseEntity<>(us.createUser(creds), HttpStatus.CREATED);
     }
 
 }
