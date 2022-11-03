@@ -1,5 +1,6 @@
 package com.revature.controllers;
 
+import com.revature.annotations.Secured;
 import com.revature.dtos.CredentialsDTO;
 import com.revature.dtos.UserDTO;
 import com.revature.entities.Role;
@@ -25,6 +26,7 @@ public class UserController {
         this.req = req;
     }
 
+    @Secured(rolesAllowed = "ADMIN")
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<UserDTO>> getUsers(@RequestParam(name = "role", required = false) Role role) {
         if (role == null) {
@@ -35,6 +37,7 @@ public class UserController {
         }
     }
 
+    @Secured(rolesAllowed = {"ADMIN", "MANAGER"})
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<UserDTO> getById(@PathVariable("id") String id) {
         return new ResponseEntity<>(us.getUserById(id), HttpStatus.OK);
