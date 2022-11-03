@@ -22,25 +22,11 @@ public class UserController {
 
     @Autowired
     public UserController(UserService us){
-        System.out.println("UserController created!");
         this.us = us;
     }
 
-    /*-
-        /users - Get
-
-        retrieve all usersDTO
-
-        /users?role=
-     */
-
-
-//    @RequestMapping(method= RequestMethod.GET, value="/users")
     @GetMapping
-//    @ResponseBody
     public ResponseEntity<List<UserDTO>> getUsers(@RequestParam(name="role", required = false) Role role){
-
-
 
         List<UserDTO> users = null;
         // meaning no request params (ie: no role), return all users
@@ -55,13 +41,7 @@ public class UserController {
 
     }
 
-    /*-
-    Get User By ID?
-    Get - /users/{id}
-     */
-
     @GetMapping("/{id}")
-//    @ResponseBody
     public ResponseEntity<UserDTO> getById(@PathVariable("id") String id){
 
             UserDTO userDTO = us.getUserById(id);
@@ -71,7 +51,6 @@ public class UserController {
     }
 
     @PostMapping
-//    @ResponseBody
     public ResponseEntity<UserDTO> createUser(@RequestBody CredentialsDTO creds){
 
         UserDTO userDTO = us.createUser(creds);
