@@ -13,4 +13,8 @@ public class GlobalExceptionHandler {
     public void handleUserNotFoundException(Exception e){
         System.out.println("[ERROR]: " + e );
     }
+
+    @ResponseStatus(value= HttpStatus.BAD_REQUEST, reason = "Unable to login")
+    @ExceptionHandler(LoginException.class)
+    public void handleLoginException(Exception e) { System.out.println("[ERROR]: " + e);}
 }

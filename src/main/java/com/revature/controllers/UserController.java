@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -16,11 +18,13 @@ import java.util.List;
 public class UserController {
 
     private UserService us;
+    private HttpServletRequest req;
 
     @Autowired
-    public UserController(UserService us){
-        System.out.println("UserController created!");
+    public UserController(UserService us, HttpServletRequest req){
+//        System.out.println("UserController created!");
         this.us = us;
+        this.req = req;
     }
 
     /*-
@@ -36,6 +40,12 @@ public class UserController {
     @GetMapping
 //    @ResponseBody
     public ResponseEntity<List<UserDTO>> getUsers(@RequestParam(name="role", required = false) Role role){
+//        HttpSession session = req.getSession();
+//        if(session.getAttribute("role") == null || !session.getAttribute("role").equals(Role.ADMIN)){
+//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+//        }
+
+
         List<UserDTO> users = null;
         // meaning no request params (ie: no role), return all users
         if(role == null){
