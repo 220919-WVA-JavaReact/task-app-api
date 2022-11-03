@@ -39,6 +39,9 @@ public class UserController {
     @GetMapping
 //    @ResponseBody
     public ResponseEntity<List<UserDTO>> getUsers(@RequestParam(name="role", required = false) Role role){
+
+
+
         List<UserDTO> users = null;
         // meaning no request params (ie: no role), return all users
         if(role == null){
