@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -16,16 +17,19 @@ import java.util.List;
 public class UserController {
 
     private UserService us;
+    private HttpServletRequest req;
 
     @Autowired
     public UserController(UserService us) {
         this.us = us;
+        this.req = req;
     }
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<UserDTO>> getUsers(@RequestParam(name = "role", required = false) Role role) {
         if (role == null) {
             return new ResponseEntity<>(us.getAllUsers(), HttpStatus.OK);
+
         } else {
             return new ResponseEntity<>(us.getAllUsersByRole(role), HttpStatus.OK);
         }

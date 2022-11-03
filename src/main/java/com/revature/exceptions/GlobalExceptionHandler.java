@@ -15,12 +15,12 @@ public class GlobalExceptionHandler {
     public void handleUserNotFoundException(){
     }
 
-    @ResponseStatus(value= HttpStatus.BAD_REQUEST, reason = "Login unsuccesful.")
+    @ResponseStatus(value= HttpStatus.BAD_REQUEST, reason = "Login unsuccessful.")
     @ExceptionHandler(LoginException.class)
     public void handleLoginException(){
     }
 
-    @ResponseStatus(value= HttpStatus.BAD_REQUEST, reason = "Register unsuccesful.")
+    @ResponseStatus(value= HttpStatus.BAD_REQUEST, reason = "Register unsuccessful.")
     @ExceptionHandler(RegisterException.class)
     public void handleRegisterException(){
     }

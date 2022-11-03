@@ -24,19 +24,19 @@ public class LoggingAspect {
         String methodSignature = extractMethodSignature(jp);
         String methodArgs = Arrays.toString(jp.getArgs());
 
-        log.trace( methodSignature + " invoked with provided arguments: " + methodArgs);
+        log.debug(methodSignature + " invoked with provided arguments: " + methodArgs);
     }
 
     @AfterReturning(value = "logAll()", returning = "returnedObject")
     public void logMethodReturn(JoinPoint jp, Object returnedObject){
         String methodSignature = extractMethodSignature(jp);
-        log.trace(methodSignature + " successfully returned with the value: " + returnedObject);
+        log.debug(methodSignature + " successfully returned with the value: " + returnedObject);
     }
 
     @AfterThrowing(value = "logAll()", throwing = "t")
     public void logMethodException(JoinPoint jp, Throwable t){
         String methodSignature = extractMethodSignature(jp);
-        log.trace(methodSignature + " successfully returned with the value: " + t.getMessage());
+        log.error(methodSignature + " threw " + t.getClass() + ". ", t);
     }
     public String extractMethodSignature(JoinPoint jp){
         String methodSignature = jp.getTarget().getClass().getSimpleName()+ "#" + jp.getSignature().getName();

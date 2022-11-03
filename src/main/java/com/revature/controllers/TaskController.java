@@ -7,12 +7,10 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class TaskController {
 
-
     private TaskService ts;
 
     @Autowired
     public TaskController(TaskService ts){
-        System.out.println("TaskController created!");
         this.ts = ts;
     }
 }

@@ -12,6 +12,8 @@ public class PrincipalDTO {
     private String id;
     private String username;
     private Role role;
+
+    public PrincipalDTO() {}
     public PrincipalDTO(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
