@@ -15,31 +15,41 @@ public class LoggingAspect {
     private static Logger log = LoggerFactory.getLogger(LoggingAspect.class);
 
     @Pointcut("within(com.revature..*)")
-    public void logAll(){
+    public void logAll() {
         // our pointcut reference
     }
 
     @Before(value = "logAll()")
-    public void logMethodStart(JoinPoint jp){
+    public void logMethodStart(JoinPoint jp) {
         String methodSignature = extractMethodSignature(jp);
-        String methodArgs = Arrays.toString(jp.getArgs());
+        Object[] args = jp.getArgs();
 
-        log.debug(methodSignature + " invoked with provided arguments: " + methodArgs);
+        if (args.length == 0) {
+            log.debug(methodSignature + " invoked.");
+        } else {
+            String methodArgs = Arrays.toString(jp.getArgs());
+            log.debug(methodSignature + " invoked with provided arguments: " + methodArgs);
+        }
     }
 
     @AfterReturning(value = "logAll()", returning = "returnedObject")
-    public void logMethodReturn(JoinPoint jp, Object returnedObject){
+    public void logMethodReturn(JoinPoint jp, Object returnedObject) {
         String methodSignature = extractMethodSignature(jp);
-        log.debug(methodSignature + " successfully returned with the value: " + returnedObject);
+        if (returnedObject == null) {
+            log.debug(methodSignature + " successfully executed.");
+        } else {
+            log.debug(methodSignature + " successfully returned with the value: " + returnedObject);
+        }
     }
 
     @AfterThrowing(value = "logAll()", throwing = "t")
-    public void logMethodException(JoinPoint jp, Throwable t){
+    public void logMethodException(JoinPoint jp, Throwable t) {
         String methodSignature = extractMethodSignature(jp);
         log.error(methodSignature + " threw " + t.getClass() + ". ", t);
     }
-    public String extractMethodSignature(JoinPoint jp){
-        String methodSignature = jp.getTarget().getClass().getSimpleName()+ "#" + jp.getSignature().getName();
+
+    public String extractMethodSignature(JoinPoint jp) {
+        String methodSignature = jp.getTarget().getClass().getSimpleName() + "#" + jp.getSignature().getName();
         return methodSignature;
     }
 }
