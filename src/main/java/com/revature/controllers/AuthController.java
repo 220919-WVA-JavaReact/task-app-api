@@ -1,49 +1,40 @@
 package com.revature.controllers;
 
-
 import com.revature.dtos.CredentialsDTO;
-import com.revature.dtos.UserDTO;
+import com.revature.dtos.PrincipalDTO;
 import com.revature.services.AuthService;
+import com.revature.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-@RestController
+@RestController // assume that every mapping has the @ResponseBody annotation
 @RequestMapping("/auth")
 public class AuthController {
 
     private AuthService as;
-    private HttpServletRequest req;
-    private HttpServletResponse res;
+    private TokenService ts;
 
     @Autowired
-    public AuthController(AuthService as, HttpServletRequest req, HttpServletResponse res){
+    public AuthController(AuthService as, TokenService ts){
         this.as = as;
-        this.req = req;
-        this.res = res;
+        this.ts = ts;
     }
 
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    public ResponseEntity<PrincipalDTO> authenticate(@RequestBody CredentialsDTO creds){
+        PrincipalDTO principal = as.authenticate(creds);
 
-    @PostMapping
-    public ResponseEntity<UserDTO> login(@RequestBody CredentialsDTO creds){
+        // if principal is authenticated, generate token
+        String token = ts.generateToken(principal);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
 
-        UserDTO principal = as.login(creds);
-        HttpSession session = req.getSession();
-//        session.setAttribute("id", principal.getId());
-//        session.setAttribute("role", principal.getRole());
-        // To make Chrome work with our cookie
-//        String cookie = res.getHeader("Set-Cookie") + "; SameSite=None; Secure";
-//        res.setHeader("Set-Cookie", cookie);;
-
-        return new ResponseEntity<>(principal, HttpStatus.OK);
+        return new ResponseEntity<>(principal, headers, HttpStatus.OK);
     }
 }
