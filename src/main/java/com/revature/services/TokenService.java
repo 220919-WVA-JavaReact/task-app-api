@@ -1,47 +1,64 @@
 package com.revature.services;
 
-import com.revature.dtos.PrincipalDTO;
+import com.revature.dtos.UserDTO;
 import com.revature.entities.Role;
 import com.revature.entities.User;
 import com.revature.exceptions.AuthenticationException;
 import com.revature.exceptions.UserNotFoundException;
 import com.revature.repositories.UserRepository;
+import com.revature.util.JwtConfig;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class TokenService {
     private UserRepository ur;
+    private JwtConfig jc;
 
     @Autowired
-    public TokenService(UserRepository ur) {
+    public TokenService(UserRepository ur, JwtConfig jc) {
         this.ur = ur;
+        this.jc = jc;
     }
 
-    public String generateToken(PrincipalDTO principal){
+    public String generateToken(UserDTO principal) {
 
-        // NOT GOOD TOKEN, EXAMPLE'S SAKE FOR TOKEN VALIDATION
+        long now = System.currentTimeMillis();
 
-        return principal.getId()+":"+ principal.getRole();
+        return Jwts.builder()
+                .setId(principal.getId())
+                .claim("username", principal.getUsername())
+                .claim("role", principal.getRole())
+                .setIssuedAt(new Date(now))
+                .setExpiration(new Date(now + jc.getExpiration()))
+                .signWith(jc.getSigningKey(), jc.getSigAlg())
+                .compact();
     }
 
-    public PrincipalDTO extractTokenDetails(String token){
+    public UserDTO extractTokenDetails(String token) {
 
-        if(token == null){
+        if (token == null || token.isEmpty()) {
             throw new AuthenticationException();
         }
 
-        String[] tokens = token.split(":");
-        String id = tokens[0];
-        Role role = Role.valueOf(tokens[1]);
 
-        User principal = ur.findById(id).orElseThrow(() -> new AuthenticationException());
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(jc.getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
 
-        // validation behavior make sure that principal has the right role, otherwise throw another exception
-        if(!principal.getRole().equals(role)){
-            new AuthenticationException();
-        }
+        User principal = ur.findById(claims.getId()).orElseThrow(() -> new AuthenticationException());
 
-        return new PrincipalDTO(principal);
+        UserDTO subject = new UserDTO();
+        subject.setId(claims.getId());
+        subject.setUsername(claims.get("username", String.class));
+        subject.setRole(Role.valueOf(claims.get("role", String.class)));
+
+        return subject;
     }
 }

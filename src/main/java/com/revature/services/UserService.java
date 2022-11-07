@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import com.revature.dtos.AUserDTO;
 import com.revature.dtos.CredentialsDTO;
 import com.revature.dtos.UserDTO;
 import com.revature.entities.Role;
@@ -8,6 +9,8 @@ import com.revature.exceptions.RegisterException;
 import com.revature.exceptions.UserNotFoundException;
 import com.revature.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,31 +27,33 @@ public class UserService {
         this.ur = ur;
     }
 
-    public List<UserDTO> getAllUsers() {
+    public List<AUserDTO> getAllUsers() {
         List<User> users = ur.findAll();
-        List<UserDTO> usersDTO = users.stream()
-                .map(user -> new UserDTO(user))
+        List<AUserDTO> usersDTO = users.stream()
+                .map(user -> new AUserDTO(user))
                 .collect(Collectors.toList());
         return usersDTO;
     }
 
-    public List<UserDTO> getAllUsersByRole(Role role) {
+    public List<AUserDTO> getAllUsersByRole(Role role) {
         List<User> users = ur.findUsersByRole(role);
-        List<UserDTO> usersDTO = users.stream()
-                .map(user -> new UserDTO(user))
+        List<AUserDTO> usersDTO = users.stream()
+                .map(user -> new AUserDTO(user))
                 .collect(Collectors.toList());
         return usersDTO;
     }
 
-    public UserDTO getUserById(String id) {
+    public AUserDTO getUserById(String id) {
         User user = ur.findById(id).orElseThrow(() -> new UserNotFoundException());
-        UserDTO userDTO = new UserDTO(user);
+        AUserDTO userDTO = new AUserDTO(user);
         return userDTO;
     }
 
     @Transactional
     public UserDTO createUser(CredentialsDTO creds) {
-
+        if (creds.getUsername() == null || creds.getUsername().equals("") || creds.getPassword() == null || creds.getPassword().equals("")) {
+            throw new RegisterException();
+        }
         if (ur.findUserByUsername(creds.getUsername()).isPresent()) {
             throw new RegisterException();
         }
@@ -60,5 +65,20 @@ public class UserService {
         newUser.setManager(null); // could define a default manager
 
         return new UserDTO(ur.save(newUser));
+    }
+
+    @Transactional
+    public UserDTO updateUserCredentials(String id, CredentialsDTO creds) {
+
+        User existingUser = ur.findById(id).orElseThrow(() -> new UserNotFoundException());
+
+        if (creds.getUsername() != null && !creds.getUsername().equals("")) {
+            existingUser.setUsername(creds.getUsername());
+        }
+        if (creds.getPassword() != null && !creds.getPassword().equals("")) {
+            existingUser.setPassword(creds.getPassword());
+        }
+
+        return new UserDTO(ur.save(existingUser));
     }
 }
