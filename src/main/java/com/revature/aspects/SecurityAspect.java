@@ -8,6 +8,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ public class SecurityAspect {
     private HttpServletRequest req;
     private TokenService ts;
 
+    @Autowired
     public SecurityAspect(HttpServletRequest req, TokenService ts){
         this.req = req;
         this.ts = ts;

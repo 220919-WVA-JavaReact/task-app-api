@@ -6,6 +6,7 @@ import com.revature.dtos.UserDTO;
 import com.revature.entities.Role;
 import com.revature.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +19,10 @@ import java.util.List;
 public class UserController {
 
     private UserService us;
-    private HttpServletRequest req;
 
     @Autowired
     public UserController(UserService us) {
         this.us = us;
-        this.req = req;
     }
 
     @Secured(rolesAllowed = "ADMIN")
