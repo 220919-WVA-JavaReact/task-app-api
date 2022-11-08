@@ -1,7 +1,7 @@
 package com.revature.services;
 
 import com.revature.TaskAppApiApplication;
-import com.revature.dtos.UserDTO;
+import com.revature.dtos.AUserDTO;
 import com.revature.entities.Role;
 import com.revature.entities.User;
 import com.revature.exceptions.UserNotFoundException;
@@ -40,14 +40,14 @@ public class UserServiceTest {
         // when sut calls findById("1"), mockRepository will return an optional of returned User
         Mockito.when(mockRepository.findById("1")).thenReturn(Optional.of(returnedUser));
 
-        UserDTO expected = new UserDTO();
+        AUserDTO expected = new AUserDTO();
         expected.setId("1");
         expected.setUsername("kev");
         expected.setRole(Role.BASIC_USER);
         expected.setManagerId("2");
 
         // Act
-        UserDTO actual = sut.getUserById("1");
+        AUserDTO actual = sut.getUserById("1");
 
         // Assert
         assertEquals(expected, actual);

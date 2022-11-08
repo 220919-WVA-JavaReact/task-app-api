@@ -27,7 +27,7 @@ public class LoggingAspect {
         if (args.length == 0) {
             log.debug(methodSignature + " invoked.");
         } else {
-            String methodArgs = Arrays.toString(jp.getArgs());
+            String methodArgs = Arrays.toString(args);
             log.debug(methodSignature + " invoked with provided arguments: " + methodArgs);
         }
     }

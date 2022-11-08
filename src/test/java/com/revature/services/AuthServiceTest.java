@@ -2,11 +2,10 @@ package com.revature.services;
 
 import com.revature.TaskAppApiApplication;
 import com.revature.dtos.CredentialsDTO;
-import com.revature.dtos.PrincipalDTO;
+import com.revature.dtos.UserDTO;
 import com.revature.entities.Role;
 import com.revature.entities.User;
 import com.revature.exceptions.LoginException;
-import com.revature.exceptions.UserNotFoundException;
 import com.revature.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -40,7 +39,7 @@ public class AuthServiceTest {
         returnedUser.setRole(Role.BASIC_USER);
         returnedUser.setManager(manager);
 
-        PrincipalDTO expected = new PrincipalDTO();
+        UserDTO expected = new UserDTO();
         expected.setId("1");
         expected.setUsername("kev");
         expected.setRole(Role.BASIC_USER);
@@ -53,7 +52,7 @@ public class AuthServiceTest {
                 .thenReturn(Optional.of(returnedUser));
 
         // Act
-        PrincipalDTO actual = sut.authenticate(creds);
+        UserDTO actual = sut.authenticate(creds);
 
         // Assert
         assertEquals(expected, actual);

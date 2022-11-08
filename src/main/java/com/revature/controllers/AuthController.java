@@ -1,7 +1,7 @@
 package com.revature.controllers;
 
 import com.revature.dtos.CredentialsDTO;
-import com.revature.dtos.PrincipalDTO;
+import com.revature.dtos.UserDTO;
 import com.revature.services.AuthService;
 import com.revature.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +27,8 @@ public class AuthController {
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<PrincipalDTO> authenticate(@RequestBody CredentialsDTO creds){
-        PrincipalDTO principal = as.authenticate(creds);
+    public ResponseEntity<UserDTO> authenticate(@RequestBody CredentialsDTO creds){
+        UserDTO principal = as.authenticate(creds);
 
         // if principal is authenticated, generate token
         String token = ts.generateToken(principal);
