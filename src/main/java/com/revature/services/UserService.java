@@ -7,10 +7,8 @@ import com.revature.entities.Role;
 import com.revature.entities.User;
 import com.revature.exceptions.RegisterException;
 import com.revature.exceptions.UserNotFoundException;
-import com.revature.repositories.UserRepository;
+import com.revature.services.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

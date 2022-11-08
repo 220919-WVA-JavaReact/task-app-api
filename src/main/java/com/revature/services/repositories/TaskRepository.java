@@ -1,4 +1,4 @@
-package com.revature.repositories;
+package com.revature.services.repositories;
 
 import com.revature.entities.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
