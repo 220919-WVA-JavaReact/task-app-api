@@ -6,7 +6,7 @@ import com.revature.dtos.UserDTO;
 import com.revature.entities.Role;
 import com.revature.entities.User;
 import com.revature.exceptions.LoginException;
-import com.revature.repositories.UserRepository;
+import com.revature.services.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
