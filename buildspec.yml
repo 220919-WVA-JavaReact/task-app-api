@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+  pre_build:
+    commands:
+      - echo "Prebuild phase started."
+  build:
+    commands:
+      - mvn clean package -Pprod
+  post_build:
+    commands:
+      - mv target/*.jar ./task-app.jar
+
+artifacts:
+  files:
+    - task-app.jar
