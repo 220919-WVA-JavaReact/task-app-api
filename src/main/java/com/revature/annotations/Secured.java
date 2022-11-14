@@ -1,6 +1,5 @@
 package com.revature.annotations;
 
-import com.revature.entities.Role;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
