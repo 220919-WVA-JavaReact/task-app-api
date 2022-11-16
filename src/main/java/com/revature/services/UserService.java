@@ -5,6 +5,7 @@ import com.revature.dtos.CredentialsDTO;
 import com.revature.dtos.UserDTO;
 import com.revature.entities.Role;
 import com.revature.entities.User;
+import com.revature.exceptions.ManagerAssignmentException;
 import com.revature.exceptions.RegisterException;
 import com.revature.exceptions.UserNotFoundException;
 import com.revature.services.repositories.UserRepository;
@@ -78,5 +79,19 @@ public class UserService {
         }
 
         return new UserDTO(ur.save(existingUser));
+    }
+
+    @Transactional
+    public AUserDTO assignManager(String userId, String managerId){
+
+        User user = ur.findById(userId).orElseThrow(() -> new UserNotFoundException());
+        User manager = ur.findById(managerId).orElseThrow(() -> new UserNotFoundException());
+        if(!manager.getRole().equals(Role.MANAGER) || user.getId().equals(manager.getId())){
+            throw new ManagerAssignmentException();
+        }
+
+        user.setManager(manager);
+
+        return new AUserDTO(ur.save(user));
     }
 }

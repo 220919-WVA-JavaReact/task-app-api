@@ -63,4 +63,11 @@ public class UserController {
 
         return new ResponseEntity<>(principal, headers, HttpStatus.OK);
     }
+
+    @Secured(rolesAllowed = {"ADMIN"})
+    @PatchMapping(value = "/{userId}/manager/{managerId}", produces = "application/json")
+    public ResponseEntity<AUserDTO> assignManager(@PathVariable String userId, @PathVariable String managerId){
+        AUserDTO principal = us.assignManager(userId, managerId);
+        return new ResponseEntity<>(principal, HttpStatus.OK);
+    }
 }
