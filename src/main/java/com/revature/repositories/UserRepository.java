@@ -1,4 +1,4 @@
-package com.revature.services.repositories;
+package com.revature.repositories;
 
 import com.revature.entities.Role;
 import com.revature.entities.User;

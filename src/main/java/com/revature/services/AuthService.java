@@ -4,7 +4,7 @@ import com.revature.dtos.CredentialsDTO;
 import com.revature.dtos.UserDTO;
 import com.revature.entities.User;
 import com.revature.exceptions.LoginException;
-import com.revature.services.repositories.UserRepository;
+import com.revature.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -8,7 +8,7 @@ import com.revature.entities.User;
 import com.revature.exceptions.ManagerAssignmentException;
 import com.revature.exceptions.RegisterException;
 import com.revature.exceptions.UserNotFoundException;
-import com.revature.services.repositories.UserRepository;
+import com.revature.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

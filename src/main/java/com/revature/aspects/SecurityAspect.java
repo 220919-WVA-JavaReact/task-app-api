@@ -72,7 +72,6 @@ public class SecurityAspect {
         String id = (String) args[0];
 
 
-
         // check if principal role is present in the allowedRoles list
         if(id == null || !id.equals(principal.getId())){
             throw new AuthorizationException();
