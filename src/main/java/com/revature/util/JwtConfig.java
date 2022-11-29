@@ -13,7 +13,7 @@ import java.security.Key;
 public class JwtConfig {
     @Value("${jwt.secret}")
     private String salt;
-    @Value("#{24*60*60*1000}")
+    @Value("#{24*60*60*1000}") // 1 day
     private int expiration;
 
     private static final SignatureAlgorithm sigAlg = SignatureAlgorithm.HS256;
